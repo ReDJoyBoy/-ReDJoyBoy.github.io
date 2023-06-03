@@ -1,0 +1,55 @@
+<?php require('config/publication/showAllQuestionAction.php'); ?>
+
+<!DOCTYPE html>
+<html lang="en">
+    <!-- Inclure les fichiers CSS nécessaires pour la mise en page -->
+    <link rel="stylesheet" type="text/css" href="css/backgroundStyle.css">
+<?php include 'includes/head.php'; ?>
+<body>
+    <!-- Barre de navigation -->
+    <?php include 'includes/navbar.php'; ?>
+    <br>
+    <!-- Le reste du contenu de la page -->
+    <div class="container">
+        
+        <form method="GET">
+            <div class="form-group row mb-3">
+                <div class="col-8">
+                    <input type="search" class="form-control bg-secondary text-white border-dark" name="search">
+                </div>
+                <div class="col-4">
+                    <button type="submit" class="btn btn-success">Rechercher</button>
+                </div>
+            </div>
+        </form>
+
+        <?php
+        while ($question = $getAllQuestions->fetch_assoc()) {
+            //str_replace() retourne une chaîne ou un tableau, dont toutes les occurrences de search(ici \') dans subject(ici $questionTitle) ont été remplacées par replace(ici '). 
+            $question['titre']= str_replace("\\'", "'", $question['titre']);
+            $question['description'] = str_replace("\\'", "'", $question['description']);
+        ?>
+            <div class="card mb-2 text-white bg-dark">
+                <div class="card-header">
+                    <a href="article.php?id=<?=$question['id'];?>">
+                    <?php echo $question['titre'];?>
+                    </a>
+                </div>
+
+                <div class="card-body">
+                    <?php echo $question['description'];?>
+                </div>
+
+                <div class="card-footer">
+                    Publié par " <?php echo $question['pseudo_user'];?> " le <?php echo $question['date_publication'];?>
+                </div>
+            </div>
+            
+        <?php
+        }
+        ?>
+    </div>
+
+</body>
+</html>
+
